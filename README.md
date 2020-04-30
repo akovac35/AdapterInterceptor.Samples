@@ -1,0 +1,1 @@
+# AdapterInterceptor.Samples
