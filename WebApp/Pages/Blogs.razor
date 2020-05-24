@@ -1,0 +1,29 @@
+﻿@inherits BlogsBase
+@page "/blogs"
+
+@using global::com.github.akovac35.Logging.AspNetCore
+
+<h1>Blogs</h1>
+
+<p>This page demonstrates adapter functionality for the BlogService. It uses annotated BlogDto instead of the original Blog object which is not annotated.</p>
+
+<p>Correlation id:  @hc.GetCorrelationId()</p>
+
+<p>Current count: @blogService.Count</p>
+
+<button class="btn btn-primary" @onclick="@(async () => await AddNewRandomBlogAsync())">Add new random blog</button>
+
+<br />
+<br />
+
+<p>The following form performs annotation based validations:</p>
+
+<EditForm Model="@BlogDto" OnValidSubmit="(async () => await HandleValidSubmitAsync())">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <label for="url">Url (required, max. length 20):</label>
+    <InputText id="url" @bind-Value="BlogDto.Url" />
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+</EditForm>
