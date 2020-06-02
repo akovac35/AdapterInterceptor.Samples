@@ -65,9 +65,9 @@ namespace WebApp.Blogs
 #if DEBUG
                 // AdapterInterceptor emits logs when TRACE logger level is enabled for com.github.akovac35.AdapterInterceptor. This can be quite verbose but enables method invocation diagnostics. It is possible to completely disable logging by simply not providing a logger factory
                 var loggerFactory = fact.GetService<ILoggerFactory>();
-                var adapterInterceptor = new AdapterInterceptor<BlogService, Blog, T>(blogService, adapterMapper, loggerFactory);
+                var adapterInterceptor = new CustomAdapterInterceptor<BlogService, Blog, T>(blogService, adapterMapper, loggerFactory);
 #else
-                var adapterInterceptor = new AdapterInterceptor<BlogService, Blog, T>(blogService, adapterMapper);
+                var adapterInterceptor = new CustomAdapterInterceptor<BlogService, Blog, T>(blogService, adapterMapper);
 #endif
 
                 // In-memory database exists only for the duration of an open connection
