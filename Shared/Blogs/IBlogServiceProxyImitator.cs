@@ -11,24 +11,23 @@ using System.Threading.Tasks;
 namespace Shared.Blogs
 {
     /// <summary>
-    /// This adapter interface is provided for the benefit of the service consumer without requiring that the BlogService implements it. An adapter can be readily generated based on this interface.
+    /// This proxy imitator interface is provided for the benefit of the service consumer without requiring that the BlogService implements it. A proxy imitator can be readily generated based on this interface.
     /// The BlogService implements the IDisposable interface so we make our interface inherit it as well.
     /// </summary>
-    /// <typeparam name="T">The type of the blog data transfer object.</typeparam>
-    public interface IBlogServiceAdapter<T> : IDisposable
+    public interface IBlogServiceProxyImitator : IDisposable
     {
         BlogContext Context { get; set; }
 
         int Count { get; }
 
         // Also supported are Task, ValueTask and ValueTask<T> result types. Default method parameters must be specified in the same position as they are in the target method
-        Task<T> Add(string url = "https://defaulturl.com");
+        Task<Blog> Add(string url = "https://defaulturl.com");
 
-        Task<T> Add(T blog);
+        Task<Blog> Add(Blog blog);
 
-        IEnumerable<T> Find(string term);
+        IEnumerable<Blog> Find(string term);
 
         // out and ref parameter modifiers are supported as well
-        bool TryGet(long blogId, out T result);
+        bool TryGet(long blogId, out Blog result);
     }
 }

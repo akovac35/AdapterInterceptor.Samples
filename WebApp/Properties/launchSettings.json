@@ -2,7 +2,7 @@
   "profiles": {
     "WebApp": {
       "commandName": "Project",
-      "commandLineArgs": "nlog",
+      "commandLineArgs": "serilog",
       "launchBrowser": true,
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"

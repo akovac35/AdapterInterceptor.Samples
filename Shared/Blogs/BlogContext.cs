@@ -20,6 +20,6 @@ namespace Shared.Blogs
         {
         }
 
-        public DbSet<Blog> Blogs { get; set; }
+        public DbSet<Blog> Blogs => Set<Blog>();
     }
 }

@@ -7,7 +7,6 @@
 using com.github.akovac35.Logging;
 using global::Shared.Blogs;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using System;
 using WebApp.Blogs;
@@ -16,42 +15,40 @@ namespace WebApp.Pages
 {
     public class BlogsBase : ComponentBase
     {
-        [Inject] public IHttpContextAccessor hc { get; set; }
+#pragma warning disable CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
+        [Inject] public IBlogServiceAdapter<BlogDto> BlogService { get; set; }
 
-        [Inject] public IBlogServiceAdapter<BlogDto> blogService { get; set; }
-
-        [Inject] public ILoggerFactory loggerFactory { get; set; }
-
-        [Inject] public ILogger<WebApp.Pages.BlogsBase> logger { get; set; }
+        [Inject] private ILogger<BlogsBase> Logger { get; set; }
+#pragma warning restore CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
 
         public BlogDto BlogDto { get; set; } = new BlogDto();
 
         public async System.Threading.Tasks.Task AddNewRandomBlogAsync()
         {
-            logger.Here(l => l.Entering());
+            Logger.Here(l => l.Entering());
 
-            var blogDto = await blogService.Add(Guid.NewGuid().ToString());
+            var blogDto = await BlogService.Add(Guid.NewGuid().ToString());
             // Will automatically use transaction
-            blogService.Context.SaveChanges();
+            BlogService.Context.SaveChanges();
 
             this.StateHasChanged();
 
-            logger.Here(l => l.Exiting());
+            Logger.Here(l => l.Exiting());
         }
 
         public async System.Threading.Tasks.Task<BlogDto> HandleValidSubmitAsync()
         {
-            logger.Here(l => l.Entering(BlogDto));
+            Logger.Here(l => l.Entering(BlogDto));
 
-            var blogDto = await blogService.Add(BlogDto);
+            var blogDto = await BlogService.Add(BlogDto);
             // Will automatically use transaction
-            blogService.Context.SaveChanges();
-            
+            BlogService.Context.SaveChanges();
+
             BlogDto = new BlogDto();
 
             this.StateHasChanged();
 
-            logger.Here(l => l.Exiting(blogDto));
+            Logger.Here(l => l.Exiting(blogDto));
             return blogDto;
         }
     }

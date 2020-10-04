@@ -5,14 +5,12 @@
 //   Aleksander Kovač
 
 using AutoMapper;
-using Castle.DynamicProxy;
-using com.github.akovac35.Logging.Correlation;
+using com.github.akovac35.Logging.AspNetCore.Correlation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Serilog;
 using Shared;
 using Shared.Blogs;
@@ -33,12 +31,6 @@ namespace WebApp
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddHttpContextAccessor();
-
-            services.AddScoped<ICorrelationProvider, CorrelationProvider>();
-
-            services.AddSingleton(new ProxyGenerator());
-
             services.AddSingleton(new MapperConfiguration(cfg =>
             {
                 cfg.CreateMap<Blog, BlogDto>().ReverseMap();
@@ -46,24 +38,15 @@ namespace WebApp
 
             services.AddScopedBlogServiceAdapter<BlogDto>();
 
+            services.AddLoggingCorrelation();
+
             services.AddRazorPages();
             services.AddServerSideBlazor();
-        }       
+        }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            SamplesLoggingHelper.LoggerConfig(configActionNLog: () =>
-            {
-                // Update the LoggerFactoryProvider once logging config is fully complete
-                com.github.akovac35.Logging.LoggerFactoryProvider.LoggerFactory = loggerFactory;
-            }, configActionSerilog: () =>
-            {
-                app.UseSerilogRequestLogging();
-                // Update the LoggerFactoryProvider once logging config is fully complete
-                com.github.akovac35.Logging.LoggerFactoryProvider.LoggerFactory = loggerFactory;
-            });
-
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -72,6 +55,15 @@ namespace WebApp
             {
                 app.UseExceptionHandler("/Error");
             }
+
+            SamplesLoggingHelper.LoggerConfig(configActionNLog: () =>
+            {
+                app.UseLoggingCorrelation();
+            }, configActionSerilog: () =>
+            {
+                app.UseLoggingCorrelation();
+                app.UseSerilogRequestLogging();
+            });
 
             app.UseStaticFiles();
 

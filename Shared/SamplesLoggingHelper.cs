@@ -19,13 +19,13 @@ namespace Shared
 
         public static Loggers SelectedLogger { get; set; } = Loggers.None;
 
-        public static void LoggerConfig(Action configActionNLog = null, Action configActionSerilog = null)
+        public static void LoggerConfig(Action? configActionNLog = null, Action? configActionSerilog = null)
         {
             if (configActionNLog != null && SelectedLogger == Loggers.NLog) configActionNLog();
             if (configActionSerilog != null && SelectedLogger == Loggers.Serilog) configActionSerilog();
         }
 
-        public static void LoggerInit(string[] args, Action configActionNLog = null, Action configActionSerilog = null)
+        public static void LoggerInit(string[] args, Action? configActionNLog = null, Action? configActionSerilog = null)
         {
             if (args == null || args.Length == 0 || string.IsNullOrWhiteSpace(args[0]))
             {

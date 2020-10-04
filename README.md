@@ -5,11 +5,13 @@ This project contains samples for the [AdapterInterceptor](https://github.com/ak
 ![this](Resources/.NET_Core_Logo_small.png)
 
 ## Executing code
-Navigate to ../WebApp and execute ```dotnet run serilog``` or ```dotnet run nlog```.
+Navigate to ../WebApp and execute ```dotnet run serilog``` or ```dotnet run nlog```. Execute ```dotnet test``` for the TestApp.
 
 ## Contents
 
-A sample of adapting a ```BlogService``` to use the ```BlogDto``` instead of the original ```Blog``` data transfer object is provided.
+The following samples are provided:
+ * A sample of adapting the ```BlogService``` to use the ```BlogDto``` instead of the original ```Blog``` data transfer object,
+ * a sample of using ```ProxyImitatorInterceptor```, which is a variant of ```AdapterInterceptor```, to proxy non-virtual methods.
 
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.

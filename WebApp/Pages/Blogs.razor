@@ -1,15 +1,17 @@
 ﻿@inherits BlogsBase
 @page "/blogs"
 
-@using global::com.github.akovac35.Logging.AspNetCore
+@using com.github.akovac35.Logging.Correlation
+
+@inject CorrelationProviderAccessor CorrelationProviderAccessorInstance
 
 <h1>Blogs</h1>
 
 <p>This page demonstrates adapter functionality for the BlogService. It uses annotated BlogDto instead of the original Blog object which is not annotated.</p>
 
-<p>Correlation id:  @hc.GetCorrelationId()</p>
+<p>Correlation id:  @CorrelationProviderAccessorInstance.Current?.GetCorrelationId()</p>
 
-<p>Current count: @blogService.Count</p>
+<p>Current count: @BlogService.Count</p>
 
 <button class="btn btn-primary" @onclick="@(async () => await AddNewRandomBlogAsync())">Add new random blog</button>
 
@@ -25,5 +27,5 @@
     <label for="url">Url (required, max. length 20):</label>
     <InputText id="url" @bind-Value="BlogDto.Url" />
 
-    <button type="submit" class="btn btn-primary">Submit</button>
+    <button type="submit" class="btn btn-primary">Add new blog</button>
 </EditForm>

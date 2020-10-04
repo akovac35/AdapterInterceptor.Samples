@@ -13,14 +13,14 @@ using Microsoft.Extensions.Logging.Abstractions;
 using System.Reflection;
 using System.Threading.Tasks;
 
-namespace WebApp.Blogs
+namespace TestApp
 {
-    public class CustomAdapterInterceptor<TTarget, TSource1, TDestination1> : AdapterInterceptor<TTarget, TSource1, TDestination1>
+    public class CustomProxyImitatorInterceptor<TTarget> : ProxyImitatorInterceptor<TTarget>
         where TTarget : notnull
     {
-        public CustomAdapterInterceptor(TTarget target, IAdapterMapper adapterMapper, ILoggerFactory? loggerFactory = null) : base(target, adapterMapper, loggerFactory)
+        public CustomProxyImitatorInterceptor(TTarget target, ILoggerFactory? loggerFactory = null) : base(target, loggerFactory)
         {
-            _logger = (loggerFactory?.CreateLogger<CustomAdapterInterceptor<TTarget, TSource1, TDestination1>>()) ?? (ILogger)NullLogger.Instance;
+            _logger = (loggerFactory?.CreateLogger<CustomProxyImitatorInterceptor<TTarget>>()) ?? (ILogger)NullLogger.Instance;
         }
 
         private ILogger _logger;
@@ -38,7 +38,5 @@ namespace WebApp.Blogs
             var result = await base.InvokeTargetGenericTaskAsync<TAdapter>(adapterMethod, adapterInvocationInformation, targetArguments);
             return result;
         }
-
-        // And similarly for Task and (generic) ValueTask
     }
 }

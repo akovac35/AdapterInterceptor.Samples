@@ -4,18 +4,25 @@
     "MinimumLevel": {
       "Default": "Verbose",
       "Override": {
-        "Microsoft": "Warning"
+        "Microsoft": "Information"
       }
     },
-    "Using": [ "com.github.akovac35.Logging.Serilog.AspNetCore" ],
     "Enrich": [
-      "WithThreadId",
-      "WithCorrelationId"
+      "WithThreadId"
     ],
-	"Destructure": [
-      { "Name": "ToMaximumDepth", "Args": { "maximumDestructuringDepth": 5 } },
-      { "Name": "ToMaximumStringLength", "Args": { "maximumStringLength": 1000 } },
-      { "Name": "ToMaximumCollectionCount", "Args": { "maximumCollectionCount": 20 } }
+    "Destructure": [
+      {
+        "Name": "ToMaximumDepth",
+        "Args": { "maximumDestructuringDepth": 5 }
+      },
+      {
+        "Name": "ToMaximumStringLength",
+        "Args": { "maximumStringLength": 1000 }
+      },
+      {
+        "Name": "ToMaximumCollectionCount",
+        "Args": { "maximumCollectionCount": 20 }
+      }
     ],
     "WriteTo": [
       {

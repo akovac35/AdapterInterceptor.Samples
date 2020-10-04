@@ -82,7 +82,11 @@ namespace WebApp
                         }).UseNLog();
                     }, configActionSerilog: () =>
                     {
-                        webBuilder.UseSerilog();
+                        webBuilder.ConfigureLogging(logging =>
+                        {
+                            // Needed to remove duplicate log entries
+                            logging.ClearProviders();
+                        }).UseSerilog();
                     });
                 });
     }
