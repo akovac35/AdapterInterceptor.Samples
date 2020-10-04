@@ -50,6 +50,7 @@ namespace WebApp.Blogs
             // The IBlogServiceAdapter interface inherits the IDisposable interface. When the scope is closed, the adapter instance will be disposed of by the DI framework, which will also invoke the Dispose() method on the target through the AdapterInterceptor. Note we have to release the AdapterInterceptor to release the target, it is never released by the Dispose() method invocation
             services.AddAdapter<IBlogServiceAdapter<T>, BlogService>(targetFact =>
             {
+                // Obtain the target - the adaptee
                 var blogService = targetFact.GetService<BlogService>();
                 return blogService;
             }, (serviceProvider, target) =>
